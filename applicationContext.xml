@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.abd.jms" />
+	<context:property-placeholder location="classpath*:publisher.properties"/>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="tibcoConnectionFactory" /> <!-- authenticationConnectionFactory -->
+	</bean>
+	
+	 <!-- TIBCO Connection Factory Bean -->
+  <bean id="tibcoConnectionFactory" class="com.tibco.tibjms.TibjmsConnectionFactory">
+    <constructor-arg value="tcp://abd-emsserver:5000"/>
+    <property name="userName" value="myusername"/>
+    <property name="userPassword" value="mypassword"/>
+    <property name="connAttemptCount" value="3"/>
+    <property name="connAttemptDelay" value="1500"/>
+    <property name="connAttemptTimeout" value="1000"/>
+    <property name="reconnAttemptCount" value="0"/>
+    <property name="reconnAttemptDelay" value="0"/>
+    <property name="reconnAttemptTimeout" value="0"/>
+  </bean>
+
+</beans>
